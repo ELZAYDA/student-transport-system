@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Domain.Enums;
 
-namespace Domain.Enums
+public enum UserRole
 {
-    internal class UserRole
-    {
-    }
+    Admin = 1,
+    Student = 2,
+    Driver = 3
 }

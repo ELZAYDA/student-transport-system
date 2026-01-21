@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Domain.Enums;
 
-namespace Domain.Enums
+public enum SubscriptionStatus
 {
-    internal class SubscriptionStatus
-    {
-    }
+    Active = 1,
+    Cancelled = 2
 }

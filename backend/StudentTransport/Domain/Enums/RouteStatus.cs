@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Domain.Enums;
 
-namespace Domain.Enums
+public enum RouteStatus
 {
-    internal class RouteStatus
-    {
-    }
+    Active = 1,
+    Inactive = 2
 }

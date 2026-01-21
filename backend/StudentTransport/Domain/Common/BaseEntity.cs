@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Domain.Common;
 
-namespace Domain.Common
+public abstract class BaseEntity
 {
-    internal class BaseEntity
-    {
-    }
+    public int Id { get; protected set; }
+    public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; protected set; }
+
+    public void SetUpdated() => UpdatedAt = DateTime.UtcNow;
 }
