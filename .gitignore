@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/backend/StudentTransport/Domain/obj
+/backend/StudentTransport/StudentTransport/obj
+/backend/StudentTransport/Infrastructure/obj
+/backend/StudentTransport/Application/obj
