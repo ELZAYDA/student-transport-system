@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Application.Interfaces
 {
-    internal interface IRouteRepository
+    public interface IRouteRepository : IGenericRepository<Route>
     {
+        Task<IReadOnlyList<Route>> GetActiveRoutesAsync();
     }
 }

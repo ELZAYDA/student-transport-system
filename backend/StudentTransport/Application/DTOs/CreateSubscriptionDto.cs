@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Application.DTOs
 {
-    internal class CreateSubscriptionDto
+    public class CreateSubscriptionDto
     {
+        public int StudentId { get; set; }
+        public int RouteId { get; set; }
     }
 }
