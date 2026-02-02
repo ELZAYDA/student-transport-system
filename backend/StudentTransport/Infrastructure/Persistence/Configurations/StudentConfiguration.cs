@@ -1,10 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Infrastructure/Persistence/Configurations/StudentConfiguration.cs
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Configurations
+public class StudentConfiguration : IEntityTypeConfiguration<Student>
 {
-    internal class StudentConfiguration
+    public void Configure(EntityTypeBuilder<Student> builder)
     {
+        builder.ToTable("Students");
+
+        builder.HasKey(s => s.Id);
+
+        builder.Property(s => s.StudentCode)
+            .HasMaxLength(20);
+
+        builder.Property(s => s.ParentName)
+            .HasMaxLength(100);
+
+        builder.Property(s => s.ParentPhone)
+            .HasMaxLength(20);
+
+        builder.Property(s => s.SchoolName)
+            .HasMaxLength(200);
+
+        builder.Property(s => s.Grade)
+            .HasMaxLength(50);
+
+        builder.Property(s => s.Address)
+            .HasMaxLength(500);
+
+        builder.Property(s => s.MedicalNotes)
+            .HasMaxLength(1000);
+
+        // لا يوجد علاقة مباشرة مع ApplicationUser هنا
+        // يمكنك فقط حفظ UserId
+
+        // فهرسة
+        builder.HasIndex(s => s.StudentCode).IsUnique();
+        builder.HasIndex(s => s.UserId).IsUnique(); // كل user يمكن أن يكون طالب واحد فقط
     }
 }

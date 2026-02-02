@@ -1,26 +1,46 @@
-﻿using Domain.Common;
+﻿// Domain/Entities/Driver.cs
+using Domain.Common;
 
-namespace Domain.Entities;
-
-public class Driver : BaseEntity
+namespace Domain.Entities
 {
-    public int UserId { get; private set; }
-    public string FullName { get; private set; } = null!;
-    public string Phone { get; private set; } = null!;
-    public string LicenseNumber { get; private set; } = null!;
-    public bool IsActive { get; private set; } = true;
-
-    public User User { get; private set; } = null!;
-    public Vehicle Vehicle { get; private set; } = null!;
-    public ICollection<Route> Routes { get; private set; } = new List<Route>();
-
-    private Driver() { }
-
-    public Driver(int userId, string fullName, string phone, string licenseNumber)
+    public class Driver : BaseEntity
     {
-        UserId = userId;
-        FullName = fullName;
-        Phone = phone;
-        LicenseNumber = licenseNumber;
+        public int UserId { get; private set; }  // أو string إذا كنت تستخدم IdentityUser الافتراضي
+        public string LicenseNumber { get; private set; } = null!;
+        public DateTime LicenseExpiryDate { get; private set; }
+        public bool IsActive { get; private set; } = true;
+        public DateTime? HireDate { get; private set; }
+        public string? EmergencyContact { get; private set; }
+        public string? EmergencyPhone { get; private set; }
+
+        // إزالة هذا السطر: public User User { get; private set; } = null!;
+        // بدلاً منه، يمكنك إضافة:
+        // public ApplicationUser? ApplicationUser { get; set; } // إذا أردت navigation property
+
+        public Vehicle Vehicle { get; private set; } = null!;
+        public ICollection<Route> Routes { get; private set; } = new List<Route>();
+
+        private Driver() { }
+
+        public Driver(int userId, string licenseNumber, DateTime licenseExpiryDate)
+        {
+            UserId = userId;
+            LicenseNumber = licenseNumber;
+            LicenseExpiryDate = licenseExpiryDate;
+            HireDate = DateTime.UtcNow;
+        }
+
+        // إضافة Methods لتحديث البيانات
+        public void UpdateDriverInfo(string licenseNumber, DateTime licenseExpiryDate,
+                                    string? emergencyContact, string? emergencyPhone)
+        {
+            LicenseNumber = licenseNumber;
+            LicenseExpiryDate = licenseExpiryDate;
+            EmergencyContact = emergencyContact;
+            EmergencyPhone = emergencyPhone;
+        }
+
+        public void Activate() => IsActive = true;
+        public void Deactivate() => IsActive = false;
     }
 }
