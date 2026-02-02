@@ -11,9 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("IdentityDb")));
+
 
 // =======================
 // Identity
