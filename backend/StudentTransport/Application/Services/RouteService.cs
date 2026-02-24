@@ -16,7 +16,7 @@ namespace Application.Services
             _routeRepository = routeRepository;
         }
 
-        public async Task CreateRouteAsync(CreateRouteDto dto)
+        public async Task CreateRouteAsync(AuthResponse dto)
         {
             var route = new Route(
                 dto.DriverId,

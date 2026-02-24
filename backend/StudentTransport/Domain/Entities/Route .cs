@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain;
 using Domain.Enums;
 
 
@@ -22,6 +23,11 @@ public class Route : BaseEntity
 
     public Route(int driverId, string name, string start, string end, TimeSpan time, int capacity)
     {
+        if (capacity <= 0)
+            throw new ArgumentException("Capacity must be greater than zero");
+        
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Route name is required");
         DriverId = driverId;
         Name = name;
         StartPoint = start;
@@ -29,4 +35,20 @@ public class Route : BaseEntity
         DepartureTime = time;
         Capacity = capacity;
     }
+    public void ReserveSeat()
+    {
+        if (CurrentOccupancy >= Capacity)
+            throw new InvalidOperationException("Route is full");
+
+        CurrentOccupancy++;
+    }
+
+    public void ReleaseSeat()
+    {
+        if (CurrentOccupancy <= 0)
+            throw new InvalidOperationException("Invalid occupancy");
+
+        CurrentOccupancy--;
+    }
+   
 }

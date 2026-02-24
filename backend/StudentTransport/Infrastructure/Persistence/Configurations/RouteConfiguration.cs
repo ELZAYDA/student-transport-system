@@ -2,10 +2,6 @@
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Persistence.Configurations
 {
@@ -18,47 +14,57 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasKey(r => r.Id);
 
             builder.Property(r => r.Name)
-                .IsRequired()
-                .HasMaxLength(100);
+                   .IsRequired()
+                   .HasMaxLength(100);
 
             builder.Property(r => r.StartPoint)
-                .IsRequired()
-                .HasMaxLength(200);
+                   .IsRequired()
+                   .HasMaxLength(200);
 
             builder.Property(r => r.EndPoint)
-                .IsRequired()
-                .HasMaxLength(200);
+                   .IsRequired()
+                   .HasMaxLength(200);
 
             builder.Property(r => r.DepartureTime)
-                .IsRequired();
+                   .IsRequired();
 
             builder.Property(r => r.Capacity)
-                .IsRequired();
+                   .IsRequired();
 
             builder.Property(r => r.CurrentOccupancy)
-                .HasDefaultValue(0);
+                   .HasDefaultValue(0);
 
-            // تحويل Enum
-            var converter = new ValueConverter<RouteStatus, string>(
-                v => v.ToString(),
-                v => (RouteStatus)Enum.Parse(typeof(RouteStatus), v));
-
+            // Enum Conversion (الأفضل والأبسط)
             builder.Property(r => r.Status)
-                .HasConversion(converter)
-                .HasMaxLength(20)
-                .HasDefaultValue(RouteStatus.Active);
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(20)
+                   .HasDefaultValue(RouteStatus.Active);
+
+            // Database Constraints (مهم جدًا في Production)
+            builder.ToTable(t => t.HasCheckConstraint(
+                "CK_Routes_CurrentOccupancy",
+                "[CurrentOccupancy] >= 0"));
+
+            builder.ToTable(t => t.HasCheckConstraint(
+                "CK_Routes_Capacity",
+                "[Capacity] > 0"));
+
+            // Indexes لتحسين الأداء
+            builder.HasIndex(r => r.DriverId);
+            builder.HasIndex(r => r.Status);
 
             // العلاقة مع Driver
             builder.HasOne(r => r.Driver)
-                .WithMany(d => d.Routes)
-                .HasForeignKey(r => r.DriverId)
-                .OnDelete(DeleteBehavior.Restrict);
+                   .WithMany(d => d.Routes)
+                   .HasForeignKey(r => r.DriverId)
+                   .OnDelete(DeleteBehavior.Restrict);
 
             // العلاقة مع Subscriptions
             builder.HasMany(r => r.Subscriptions)
-                .WithOne(s => s.Route)
-                .HasForeignKey(s => s.RouteId)
-                .OnDelete(DeleteBehavior.Cascade);
+                   .WithOne(s => s.Route)
+                   .HasForeignKey(s => s.RouteId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

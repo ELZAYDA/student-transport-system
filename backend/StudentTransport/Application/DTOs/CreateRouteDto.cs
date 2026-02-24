@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Application.DTOs
 {
-    public class CreateRouteDto
+    public class AuthResponse
     {
         public int DriverId { get; set; }
         public string Name { get; set; } = null!;

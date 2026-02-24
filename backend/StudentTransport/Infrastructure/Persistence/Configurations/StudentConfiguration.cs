@@ -36,7 +36,12 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
         // يمكنك فقط حفظ UserId
 
         // فهرسة
-        builder.HasIndex(s => s.StudentCode).IsUnique();
-        builder.HasIndex(s => s.UserId).IsUnique(); // كل user يمكن أن يكون طالب واحد فقط
+        builder.Property(s => s.StudentCode)
+       .IsRequired()
+       .HasMaxLength(20);
+
+        builder.Property(s => s.UserId)
+       .IsRequired()
+       .HasMaxLength(450); // كل user يمكن أن يكون طالب واحد فقط
     }
 }

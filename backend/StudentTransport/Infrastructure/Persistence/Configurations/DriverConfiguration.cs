@@ -28,15 +28,19 @@ public class DriverConfiguration : IEntityTypeConfiguration<Driver>
             .HasDefaultValue(true);
 
         builder.Property(d => d.HireDate)
-            .HasDefaultValueSql("GETDATE()");
+         .HasDefaultValueSql("SYSUTCDATETIME()");//multiple drivers can be hired at the same time, so we use UTC date time to avoid issues with time zones
 
         // لا يوجد علاقة مباشرة مع ApplicationUser هنا
         // يمكنك فقط حفظ UserId
 
+        builder.Property(d => d.UserId)
+       .IsRequired()
+       .HasMaxLength(450);
+
         builder.HasOne(d => d.Vehicle)
-            .WithOne(v => v.Driver)
-            .HasForeignKey<Vehicle>(v => v.DriverId)
-            .OnDelete(DeleteBehavior.Restrict);
+       .WithOne(v => v.Driver)
+       .HasForeignKey<Vehicle>(v => v.DriverId)
+       .IsRequired(false);
 
         builder.HasMany(d => d.Routes)
             .WithOne(r => r.Driver)

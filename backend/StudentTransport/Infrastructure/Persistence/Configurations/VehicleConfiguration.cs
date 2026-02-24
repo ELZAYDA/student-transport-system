@@ -19,9 +19,13 @@ namespace Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(20);
 
+            builder.HasIndex(v => v.PlateNumber)
+                   .IsUnique()
+                   .HasDatabaseName("IX_Vehicles_PlateNumber");
+            
             builder.Property(v => v.Type)
-                .IsRequired()
-                .HasMaxLength(50);
+            .IsRequired()
+            .HasConversion<string>();
 
             builder.Property(v => v.Capacity)
                 .IsRequired();
